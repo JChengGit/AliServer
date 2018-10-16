@@ -85,12 +85,12 @@ def score_user(users):
 
 # 运行创建表
 def create_table():
-    db = pymysql.connect(host='localhost', user='root', password='JCheng123', port=3306)
+    db = pymysql.connect(host='localhost', user='zy', password='123456', port=3306)
     cursor = db.cursor()
 
     cursor.execute("CREATE DATABASE spiders6 DEFAULT CHARACTER SET utf8")
     db.close()
-    db = pymysql.connect(host='localhost', user='root', password='root', port=3306,db='spiders6')
+    db = pymysql.connect(host='localhost', user='zy', password='123456', port=3306,db='spiders6')
     cursor = db.cursor()
     sql = 'CREATE TABLE IF NOT EXISTS ustest2 (id varchar(255) NOT NULL,' \
           '月薪 varchar(255) ,住房 varchar(255) ,购车 varchar(255) ,' \
@@ -100,7 +100,7 @@ def create_table():
     db.close()
 
 def save_db(users):
-    db = pymysql.connect(host='localhost', user='root', password='root', port=3306,db='spiders6')
+    db = pymysql.connect(host='localhost', user='zy', password='123456', port=3306,db='spiders6')
     cursor = db.cursor()
     table = 'ustest2'
     for user in users:
@@ -137,7 +137,7 @@ def convert_dict(users):
 
 
 # 第一次使用create_table()创建db
-# create_table()#创建数据库以及所需的表
+create_table()#创建数据库以及所需的表
 users = read_data()
 users = convert_dict(users)
 save_db(users)
