@@ -2,9 +2,12 @@ from rest_framework.response import Response
 from rest_framework import mixins, generics, status
 from django.http.response import HttpResponse
 from .models import *
-import json
 import pandas
 from pandas import DataFrame,Series
+import json
+import pandas as pd
+import re
+import mysqlclient
 
 class Distribution(generics.GenericAPIView):
 
@@ -40,3 +43,49 @@ class Distribution(generics.GenericAPIView):
         for key, value in count.items():
             distribution[key] = [value, '%.0f%%' % (value / total * 100)]
         return distribution
+
+
+class API1(generics.GenericAPIView):
+
+    def get(self,request):
+        # pd.set_option('display.width', 10000)
+        # pd.set_option('display.max_rows', 500)
+        # pd.set_option('display.max_columns', 500)
+        params = request.query_params.get('params').split(',')
+        usersR = self.get_analyis_data_by_score(params[0],params[1],params[2])
+        return usersR
+
+
+    def query_users(self):
+        db = mysqlclient.connect(host='localhost', user='root', password='JCheng123', port=3306,db='spiders6')
+        cursor = db.cursor()
+        sql = 'SELECT * FROM ustest2'
+        columns = []
+        users2 = []
+        try:
+            cursor.execute(sql)
+            users = cursor.fetchall()
+            cols = cursor.description
+            db.close()
+            for col in cols:
+                column = col[0]
+                columns.append(column)
+            for user in users:
+                users2.append(user)
+        except Exception as e:
+            print(e)
+        db.close()
+        return users2,columns
+
+    def get_analyis_data_by_score(self,SBeign,SEnd,attr):
+        users,cols = self.query_users()
+        usersDF = pd.DataFrame(users,columns=cols)
+        usersDF['分数'] = usersDF['分数'].astype('int')
+        usersAS = usersDF[usersDF['分数'] > SBeign][usersDF['分数'] < SEnd]
+        userASHeight = usersAS[attr].value_counts()
+        userASHeightDF = pd.DataFrame(userASHeight)
+        userASHeightDF['频率'] = userASHeightDF/userASHeightDF[attr].sum()
+        return userASHeightDF.to_dict()
+
+
+
