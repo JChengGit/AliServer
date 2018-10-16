@@ -7,7 +7,7 @@ from pandas import DataFrame,Series
 import json
 import pandas as pd
 import re
-import mysqlclient
+import pymysql
 
 class Distribution(generics.GenericAPIView):
 
@@ -57,7 +57,7 @@ class API1(generics.GenericAPIView):
 
 
     def query_users(self):
-        db = mysqlclient.connect(host='localhost', user='root', password='JCheng123', port=3306,db='spiders6')
+        db = pymysql.connect(host='localhost', user='root', password='JCheng123', port=3306,db='spiders6')
         cursor = db.cursor()
         sql = 'SELECT * FROM ustest2'
         columns = []

@@ -85,7 +85,7 @@ def score_user(users):
 
 # 运行创建表
 def create_table():
-    db = mysqlclient.connect(host='localhost', user='root', password='JCheng123', port=3306)
+    db = pymysql.connect(host='localhost', user='root', password='JCheng123', port=3306)
     cursor = db.cursor()
 
     cursor.execute("CREATE DATABASE spiders6 DEFAULT CHARACTER SET utf8")
