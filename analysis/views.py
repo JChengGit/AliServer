@@ -45,7 +45,7 @@ class Distribution(generics.GenericAPIView):
         return distribution
 
 
-class API1(generics.GenericAPIView):
+class API_1(generics.GenericAPIView):
 
     def get(self,request):
         # pd.set_option('display.width', 10000)
