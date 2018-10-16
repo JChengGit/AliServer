@@ -1,7 +1,7 @@
 import json
 import pandas as pd
 import re
-import mysqlclient
+import pymysql
 
 # 清洗数据后存入DB
 file_name = 'out.txt'
@@ -90,7 +90,7 @@ def create_table():
 
     cursor.execute("CREATE DATABASE spiders6 DEFAULT CHARACTER SET utf8")
     db.close()
-    db = mysqlclient.connect(host='localhost', user='root', password='root', port=3306,db='spiders6')
+    db = pymysql.connect(host='localhost', user='root', password='root', port=3306,db='spiders6')
     cursor = db.cursor()
     sql = 'CREATE TABLE IF NOT EXISTS ustest2 (id varchar(255) NOT NULL,' \
           '月薪 varchar(255) ,住房 varchar(255) ,购车 varchar(255) ,' \
@@ -100,7 +100,7 @@ def create_table():
     db.close()
 
 def save_db(users):
-    db = mysqlclient.connect(host='localhost', user='root', password='root', port=3306,db='spiders6')
+    db = pymysql.connect(host='localhost', user='root', password='root', port=3306,db='spiders6')
     cursor = db.cursor()
     table = 'ustest2'
     for user in users:
